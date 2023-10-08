@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PhotoAlbum, { Photo, RenderPhoto } from "react-photo-album";
 
 const photos: ExtendedPhoto[] = [
@@ -49,9 +49,19 @@ const photos: ExtendedPhoto[] = [
 interface ExtendedPhoto extends Photo {
   selected: boolean;
 }
+declare global {
+  interface Window {
+    selectedPhotos: ExtendedPhoto[];
+  }
+}
 
 export default function Vibe() {
   const [photoList, setPhotoList] = useState(photos);
+
+  useEffect(() => {
+    // Whenever photoList changes, make the selected photos accessible globally
+    window.selectedPhotos = photoList.filter((photo) => photo.selected);
+  }, [photoList]);
 
   function toggleImageClick(photoKey: string | undefined) {
     console.log(photoKey);
