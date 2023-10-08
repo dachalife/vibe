@@ -9,6 +9,8 @@
       name="description"
       content="Web site created using create-react-app"
     />
+
+    <script src="//js.jotform.com/JotFormCustomWidget.min.js"></script>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -27,7 +29,6 @@
     <title>React App</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -39,5 +40,25 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script type="text/javascript">
+      //always subscribe to ready event and implement widget related code
+      //inside callback function , it is the best practice while developing widgets
+      JFCustomWidget.subscribe("ready", function () {
+        var label = JFCustomWidget.getWidgetSetting("QuestionLabel");
+        document.getElementById("widgetLabelText").innerHTML = label;
+        //subscribe to form submit event
+        JFCustomWidget.subscribe("submit", function () {
+          var msg = {
+            //you should valid attribute to data for JotForm
+            //to be able to use youw widget as required
+            valid: true,
+            value: "special value!",
+          };
+          // send value to JotForm
+          JFCustomWidget.sendSubmit(msg);
+        });
+      });
+      console.log(document.getElementById("selectedphotolist"));
+    </script>
   </body>
 </html>
